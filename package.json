@@ -1,0 +1,11 @@
+{
+  "name": "wing-minesweeper",
+  "version": "1.0.0",
+  "description": "an interview thing",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Julie Busch",
+  "license": "ISC"
+}
