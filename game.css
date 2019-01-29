@@ -21,11 +21,7 @@ td.hidden {
 
 td.mine {
   position: relative;
-  background-color: gray;
-}
-
-td.mine.clicked {
-  background-color: red;
+  background-color: darkred;
 }
 
 td.mine::after {
@@ -45,4 +41,11 @@ td.safe {
 #control_panel {
   margin: 10px auto;
   text-align: center;
+}
+
+.victory {
+  height: 20px;
+  width: 40px;
+  color: white;
+  background-color: blue;
 }
