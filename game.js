@@ -1,14 +1,18 @@
 const minesweeper = {
   createAndShowBoard: function (height, width) {
+    console.log('AAAHHHHHHHHHHHH');
+    this.height = height;
+    this.width = width;
+
     // create <table> element
     const table = document.createElement("tbody");
 
     // build Table HTML
-    const tablehtml = '';
-    for (const h = 0; h < height; h++) {
+    let tablehtml = '';
+    for (let h = 0; h < height; h++) {
       tablehtml += `<tr id="row${h}>`;
-      for (const w = 0; w < width; w++) {
-        tablehtml += `<td data-status='dead' id="${w}-${h}"></td>`;
+      for (let w = 0; w < width; w++) {
+        tablehtml += `<td data-status='dead' id="${w}-${h}" class="hidden"></td>`;
       }
       tablehtml += "</tr>";
     }
@@ -33,7 +37,7 @@ const minesweeper = {
   setupBoardEvents: function() {
     function explode() {
       this.forEachCell(function(cell) {
-        if (cell.getAttribute('mine') === true) {
+        if (cell.getAttribute('mine') === 'true') {
           cell.className = 'mine';
         } else {
           cell.className = 'revealed';
@@ -41,17 +45,58 @@ const minesweeper = {
       });
     }
 
-    function reveal() {
+    function getNeighbors(cell) {
+      const dash = cell.getAttribute("id").indexOf("-");
+      const x = parseInt(cell.getAttribute("id").slice(0, dash), 10);
+      const y = parseInt(cell.getAttribute("id").slice(dash + 1), 10);
 
+      const neighborArray = [
+        {x : x-1,   y : y-1},
+        {x : x,     y : y-1},
+        {x : x+1,   y : y-1},
+        {x : x-1,   y : y},
+        {x : x+1,   y : y},
+        {x : x-1,   y : y+1},
+        {x : x,     y : y+1},
+        {x : x+1,   y : y+1}
+      ];
+      const neighborsSelector = [];
+
+      neighborArray.forEach(function(coord){
+        if ((0 <= coord.x) &&
+            (coord.x < this.width) &&
+            (0 <= coord.y) &&
+            (coord.y < this.height) ){
+          neighborsSelector.push(`${coord.x}-${coord.y}`);
+        }
+      });
+
+      return neighborsSelector;
+    }
+
+    function reveal(cell) {
+      const neighbors = getNeighbors(cell);
+      let count = 0;
+
+      neighbors.forEach(function(neighbor){
+        const neighborCell = document.getElementById(neighbor);
+        if (neighborCell.getAttribute('mine') === 'true') {
+          count++;
+        }
+      });
+
+      if (count) {
+        cell.innerText(`${count}`);
+      }
     }
 
     function onCellClick(e) {
-      if (this.getAttribute('mine') === true) {
+      if (this.getAttribute('mine') === 'true') {
         this.className = 'mine';
         explode();
       } else {
         this.className = 'safe';
-        reveal();
+        reveal(this);
       }
     };
 
@@ -118,10 +163,10 @@ const minesweeper = {
   };
 
 const easyGameButton = document.getElementById('start-easy-btn');
-easyGameButton.onclick = () => minesweeper.createAndShowBoard(10, 10);
+easyGameButton.onclick = () => { minesweeper.createAndShowBoard(10, 10); };
 
 const mediumGameButton = document.getElementById('start-medium-btn');
-mediumGameButton.onclick = () => minesweeper.createAndShowBoard(20, 20);
+mediumGameButton.onclick = () => { minesweeper.createAndShowBoard(20, 20); };
 
 const hardGameButton = document.getElementById('start-hard-btn');
-hardGameButton.onclick = () => minesweeper.createAndShowBoard(30, 30);
+hardGameButton.onclick = () => { minesweeper.createAndShowBoard(30, 30); };

@@ -1,29 +1,48 @@
 body {
-    padding: 10px;
-  }
-  
-  h1, h2 {
-    text-align: center;
-  }
-  #board{
-    margin: 0 auto;
-  }
-  
-  #board td{
-    border: 1px solid #ddd;
-    width: 18px;
-    height: 18px;
-  }
-  
-  td.alive {
-    background-color: #8CC8DD;
-  }
-  
-  td.dead {
-    background-color: #fff;
-  }
-  
-  #control_panel {
-    margin: 10px auto;
-    text-align: center;
-  }
+  padding: 10px;
+}
+
+h1, h2 {
+  text-align: center;
+}
+#board{
+  margin: 0 auto;
+}
+
+#board td{
+  border: 1px solid black;
+  width: 18px;
+  height: 18px;
+}
+
+td.hidden {
+  background-color: lightgray;
+}
+
+td.mine {
+  position: relative;
+  background-color: gray;
+}
+
+td.mine.clicked {
+  background-color: red;
+}
+
+td.mine::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+}
+
+td.safe {
+  background-color: #fff;
+}
+
+#control_panel {
+  margin: 10px auto;
+  text-align: center;
+}
