@@ -10,7 +10,6 @@ const minesweeper = {
         || (height === 30 && num >= 7)) {
           return 'true';
       }
-
       return 'false';
     }
 
@@ -87,10 +86,10 @@ const minesweeper = {
 
     function reveal(cell) {
       const neighbors = getNeighbors(cell);
-      const count = 0;
+      let count = 0;
 
       neighbors.forEach(function(neighbor){
-        console.log(count);
+        console.log(count); // why isn't this a thing in here
         const neighborCell = document.getElementById(neighbor);
         if (neighborCell.getAttribute('mine') === 'true') {
           count++;
@@ -102,25 +101,24 @@ const minesweeper = {
       }
     }
 
-    function onCellClick(e) {
-
-      function victoryCheck() {
-        const unclickedBombs = 0;
-        const clickedSafeSquares = 0;
-        this.forEachCell(function(cell) {
-          if (cell.getAttribute('clicked') === 'false' && cell.getAttribute('mine') === 'true') {
-            unclickedBombs++;
-          };
-          if (cell.getAttribute('clicked') === 'true' && cell.getAttribute('mine') === 'false') {
-            clickedSafeSquares++;
-          }
-        });
-    
-        if ((unclickedBombs + clickedSafeSquares) === (this.height * this.width)) {
-          document.getElementsByTagName('body').appendChild('<div class="victory">You Win!</div>')
+    const victoryCheck = () => {
+      let unclickedBombs = 0;
+      let clickedSafeSquares = 0;
+      this.forEachCell(function(cell) {
+        if (cell.getAttribute('clicked') === 'false' && cell.getAttribute('mine') === 'true') {
+          unclickedBombs++;
         };
-      }
+        if (cell.getAttribute('clicked') === 'true' && cell.getAttribute('mine') === 'false') {
+          clickedSafeSquares++;
+        }
+      });
+  
+      if ((unclickedBombs + clickedSafeSquares) === (this.height * this.width)) {
+        document.getElementsByTagName('body').appendChild('<div class="victory">You Win!</div>')
+      };
+    }
 
+    function onCellClick(e) {
       this.setAttribute('clicked', 'true');
       if (this.getAttribute('mine') === 'true') {
         this.className = 'mine';
@@ -129,7 +127,6 @@ const minesweeper = {
         this.className = 'safe';
         reveal(this);
         victoryCheck();
-        
       };
     };
 
