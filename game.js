@@ -45,7 +45,7 @@ const minesweeper = {
 
   setupBoardEvents: function() {
 
-    function getNeighbors(cell) {
+    const getNeighbors = (cell) => {
       const dash = cell.getAttribute("id").indexOf("-");
       const x = parseInt(cell.getAttribute("id").slice(0, dash), 10);
       const y = parseInt(cell.getAttribute("id").slice(dash + 1), 10);
@@ -64,9 +64,9 @@ const minesweeper = {
 
       neighborArray.forEach(function(coord){
         if ((0 <= coord.x) &&
-            (coord.x < this.width) &&
+            (coord.x < 10) &&
             (0 <= coord.y) &&
-            (coord.y < this.height) ){
+            (coord.y < 10) ){
           neighborsSelector.push(`${coord.x}-${coord.y}`);
         }
       });
@@ -85,14 +85,19 @@ const minesweeper = {
     }
 
     function reveal(cell) {
+      cell.className = 'safe';
+
       const neighbors = getNeighbors(cell);
       let count = 0;
 
-      neighbors.forEach(function(neighbor){
-        console.log(count); // why isn't this a thing in here
+      neighbors.forEach((neighbor) => {
         const neighborCell = document.getElementById(neighbor);
         if (neighborCell.getAttribute('mine') === 'true') {
           count++;
+        }
+        if (neighborCell.getAttribute('mine') === 'false') {
+          neighborCell.setAttribute('clicked', 'true');
+          reveal(neighborCell);
         }
       });
 
@@ -124,7 +129,6 @@ const minesweeper = {
         this.className = 'mine';
         explode(this);
       } else {
-        this.className = 'safe';
         reveal(this);
         victoryCheck();
       };
